@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+</h:head>
+<h:body>
+	<!-- 	<h:outputStylesheet name="css/default.css" /> -->
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="west" size="600" header="Query"
+			resizable="true" closable="false" collapsible="true">
+			<h:form>
+				<h:panelGrid id="grid" columns="2">
+					<h:outputText id="outputService" value="Service URL" />
+					<p:selectOneMenu value="#{sparql.service}">
+						<f:selectItem itemLabel="internal" itemValue="internal" />
+						<f:selectItem itemLabel="external" itemValue="external" />
+					</p:selectOneMenu>
+					<h:outputText id="outputQuery" value="Query" />
+					<pe:codeMirror mode="sparql" theme="eclipse" lineNumbers="true"
+						id="inputQuery" value="#{sparql.query}" required="true" />
+					<p:commandButton id="button1" value="run query"
+						action="#{sparql.executeQuery}"
+						update=":outputAccordionPanel:resultform:display
+						        :outputAccordionPanel:textoutput" />
+					<h:message id="message1" for="inputQuery" />
+
+				</h:panelGrid>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+
+			<p:accordionPanel multiple="true" id="outputAccordionPanel">
+
+				<p:tab title="Result Table">
+					<h:form id="resultform">
+						<p:dataTable var="data" value="#{sparql.results}" id="display">
+							<p:columns headerText="#{columnName}"
+								value="#{sparql.resultColumns}" var="columnName"
+								columnIndexVar="columnIndex">
+								<h:outputText value="#{data[columnName]}" />
+							</p:columns>
+						</p:dataTable>
+					</h:form>
+
+				</p:tab>
+				<p:tab title="Fuseki Text Output">
+					<h:outputText id="textoutput"
+						value="Result: &lt;br/&gt;#{sparql.formattedResults}"
+						escape="false" />
+				</p:tab>
+			</p:accordionPanel>
+
+
+		</p:layoutUnit>
+
+
+	</p:layout>
+
+</h:body>
+</html>

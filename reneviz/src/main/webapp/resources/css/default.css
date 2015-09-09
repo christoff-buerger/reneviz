@@ -1,0 +1,10 @@
+html,body {
+    height:100%;
+}
+
+.ui-widget {
+    font-size: 65%;
+ }
+.ui-widget .ui-widget {
+    font-size: 100%;
+ }
